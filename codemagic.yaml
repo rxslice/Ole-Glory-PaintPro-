@@ -1,0 +1,30 @@
+workflows:
+  flutter-apk-build:
+    name: Build Flutter APK
+    max_build_duration: 60
+    environment:
+      flutter: stable
+      xcode: latest
+      vars:
+        PROJECT_DIR: "myapp"   # <-- Change to "." if pubspec.yaml is at root
+    scripts:
+      - name: Check Flutter version
+        script: |
+          flutter --version
+      - name: Navigate to project directory
+        script: |
+          cd $PROJECT_DIR
+          pwd
+          ls
+      - name: Get Flutter dependencies
+        script: |
+          flutter pub get
+      - name: Build release APK
+        script: |
+          flutter build apk --release
+    artifacts:
+      - $PROJECT_DIR/build/app/outputs/flutter-apk/app-release.apk
+    publishing:
+      email:
+        recipients:
+          - your_email@example.com
